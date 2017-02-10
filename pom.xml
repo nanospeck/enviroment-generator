@@ -1,0 +1,61 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.nanospeck.env</groupId>
+	<artifactId>EnvironmentGenerator</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>Environment Genereator</name>
+	<description>Generates Environment variables for LOCAL SIT UAT and PROD</description>
+	<build>
+		<plugins>
+			<plugin>
+
+				<groupId>com.soebes.maven.plugins</groupId>
+				<artifactId>iterator-maven-plugin</artifactId>
+				<version>0.3</version>
+
+				<executions>
+					<execution>
+						<id>configure-log-properties</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>iterator</goal>
+						</goals>
+						<configuration>
+							<iteratorName>enviroment</iteratorName>
+							<content>1,2,3,4</content>
+							<pluginExecutors>
+
+								<pluginExecutor>
+									<plugin>
+										<artifactId>maven-resources-plugin</artifactId>
+										<version>2.7</version>
+									</plugin>
+
+									<goal>copy-resources</goal>
+
+									<configuration>
+										<outputDirectory>${project.build.directory}/${enviroment}</outputDirectory>
+										<resources>
+											<resource>
+												<directory>src/main/resources</directory>
+												<includes>
+													<include>log4j.properties</include>
+												</includes>
+												<filtering>true</filtering>
+											</resource>
+									</resources>
+								<filters>
+									<filter>src/main/filters/filter-node${enviroment}.properties</filter>
+								</filters>
+									</configuration>
+
+								</pluginExecutor>
+							</pluginExecutors>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
